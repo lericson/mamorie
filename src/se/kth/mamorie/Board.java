@@ -96,7 +96,7 @@ public class Board extends Panel {
         				card.reveal();	
         				revealed[1] = card;	
         				checkPair();
-        				//skicka iväg par-check?
+        				//skicka ivï¿½g par-check?
     				}
     				else if (revealed[0] != null && revealed[1] != null) {
     					revealed[0].conceal();
@@ -104,9 +104,9 @@ public class Board extends Panel {
     					revealed[0] = null;
     					revealed[1] = null;
     					
-    					//notis: nu msåte vi dock klicka på ett "kort" för att vända
-    					//tillbaks korten. Funkar ej att enbart klicka på spelplanen.
-    					//Ska vi lägga in mouseListener på denna?
+    					//notis: nu mÃ¥ste vi dock klicka pÃ¥ ett "kort" fÃ¶r att vÃ¤nda
+    					//tillbaks korten. Funkar ej att enbart klicka pÃ¥ spelplanen.
+    					//Ska vi lÃ¤gga in mouseListener pÃ¥ spelplanen?
     				}
     			}
     		});
@@ -121,7 +121,7 @@ public class Board extends Panel {
 		}
 		else {
 			//Not pair..
-			//null-ställa revealed här?
+			//null-stÃ¤lla revealed hÃ¤r? spelar ingen stÃ¶rre roll
 		}
 		
 	}
