@@ -6,14 +6,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class Card extends Component {
 	private static final long serialVersionUID = 1L;
@@ -23,8 +19,8 @@ public class Card extends Component {
 	final static int CORNER_RADIUS = 25;
 	
 	private boolean revealed = false;
-	private Image front = null;
-	private Image back = null;
+	private BufferedImage front = null;
+	private BufferedImage back = null;
 	
 	/**
 	 * Create a new card with front and back images
@@ -32,9 +28,9 @@ public class Card extends Component {
 	 * @param frontImageFile Front image file
 	 * @param backImageFile Back image file
 	 */
-	public Card(File frontImageFile, File backImageFile) throws IOException {
-		this.front = roundedImageFile(frontImageFile);
-		this.back = roundedImageFile(backImageFile);
+	public Card(BufferedImage front, BufferedImage back) throws IOException {
+		this.front = front;
+		this.back = back;
 	}
 	
 	@Override
@@ -44,24 +40,12 @@ public class Card extends Component {
 	
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(revealed ? front : back, 0, 0, getWidth(), getHeight(), null);
-	}
-	
-	public void reveal() {
-		revealed = true;
-		repaint();
-	}
-	
-	public void conceal() {
-		revealed = false;
-		repaint();
-	}
-
-	private BufferedImage roundedImageFile(File file) throws IOException {
-        BufferedImage image = ImageIO.read(file);
-        
-        int w = image.getWidth();
-        int h = image.getHeight();
+		//g.drawImage(revealed ? front : back, 0, 0, getWidth(), getHeight(), null);
+		
+		BufferedImage image = revealed ? front : back;
+		
+        int w = getWidth();
+        int h = getHeight();
         
         BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = output.createGraphics();
@@ -79,12 +63,20 @@ public class Card extends Component {
         // ... then compositing the image on top,
         // using the white shape from above as alpha source
         g2.setComposite(AlphaComposite.SrcAtop);
-        g2.drawImage(image, 0, 0, null);
+        g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         
         g2.dispose();
         
-        return output;
+        g.drawImage(output, 0, 0, null);
 	}
-
-
+	
+	public void reveal() {
+		revealed = true;
+		repaint();
+	}
+	
+	public void conceal() {
+		revealed = false;
+		repaint();
+	}
 }

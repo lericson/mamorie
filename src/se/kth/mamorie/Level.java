@@ -1,10 +1,5 @@
 package se.kth.mamorie;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +12,7 @@ import javax.imageio.ImageIO;
 public class Level {
 	private Card[] cards;
 	private String levelDir;
-	private File defaultBackImageFile = null;
+	private BufferedImage defaultBackImage = null;
 	
 	public Level(int levelNum) throws IOException {
 		this.levelDir = "res/level" + levelNum;
@@ -39,9 +34,9 @@ public class Level {
 		
 		int nCards = 0;
 		
-		for (File file : dir.listFiles()) {
+		for (File file : files) {
 			if (file.getName().startsWith("back.")) {
-				defaultBackImageFile = file;
+				defaultBackImage = ImageIO.read(file);
 			} else if (file.getName().startsWith("card-")) {
 				nCards++;
 			}
@@ -49,10 +44,11 @@ public class Level {
 		}
 		
 		int i = 0;
-		cards = new Card[nCards];
+		cards = new Card[2*nCards];
 		
-		for (File file : dir.listFiles()) {
+		for (File file : files) {
 			if (file.getName().startsWith("card-")) {
+				cards[i++] = loadCard(file);
 				cards[i++] = loadCard(file);
 			}
 		}
@@ -64,6 +60,6 @@ public class Level {
 	
 	private Card loadCard(File file) throws IOException {
 		// TODO Implement non-default back images
-		return new Card(file, defaultBackImageFile);
+		return new Card(ImageIO.read(file), defaultBackImage);
 	}
 }
