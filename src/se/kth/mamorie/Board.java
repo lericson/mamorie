@@ -55,7 +55,7 @@ public class Board extends Panel {
         				card.reveal();	
         				revealed[1] = card;	
         				checkPair();
-        				//skicka iv�g par-check?
+        				//skicka iväg par-check?
     				}
     				else if (revealed[0] != null && revealed[1] != null) {
     					revealed[0].conceal();
@@ -82,7 +82,6 @@ public class Board extends Panel {
 			//Not pair..
 			//null-ställa revealed här? spelar ingen större roll
 		}
-		
 	}
 	
 	/**
