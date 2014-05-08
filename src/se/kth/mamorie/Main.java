@@ -8,7 +8,7 @@ import java.awt.event.WindowListener;
 public class Main {
 
 	public static void main(String[] args) {
-		Frame frame = new Frame("Memory");
+		Frame frame = new Frame("Mamorie");
 		
 		frame.addWindowListener(new WindowListener() {
 			@Override
