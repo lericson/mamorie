@@ -17,10 +17,11 @@ import javax.imageio.ImageIO;
 public class Level {
 	private Card[] cards;
 	private String levelDir;
+	private File defaultBackImageFile = null;
 	
 	public Level(int levelNum) throws IOException {
 		this.levelDir = "res/level" + levelNum;
-		cards = this.loadCards();
+		cards = loadCards();
 	}
 	
 	public Card[] getCards() {
@@ -36,45 +37,33 @@ public class Level {
 			throw new IOException("level not found");
 		}
 		
-		cards = new Card[files.length];
+		int nCards = 0;
 		
-		for (int i = 0; i < cards.length; i++) {
-			cards[i] = loadCard(files[i]);
+		for (File file : dir.listFiles()) {
+			if (file.getName().startsWith("back.")) {
+				defaultBackImageFile = file;
+			} else if (file.getName().startsWith("card-")) {
+				nCards++;
+			}
+			// TODO Load board background and things like that
 		}
+		
+		int i = 0;
+		cards = new Card[nCards];
+		
+		for (File file : dir.listFiles()) {
+			if (file.getName().startsWith("card-")) {
+				cards[i++] = loadCard(file);
+			}
+		}
+		
+		assert nCards == i;
 		
 		return cards;
 	}
 	
 	private Card loadCard(File file) throws IOException {
-		return new Card(loadImage(file));
-	}
-	
-	private BufferedImage loadImage(File file) throws IOException {
-        BufferedImage image = ImageIO.read(file);
-        
-        int w = image.getWidth();
-        int h = image.getHeight();
-        
-        BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = output.createGraphics();
-        
-        // This is what we want, but it only does hard-clipping, i.e. aliasing
-        // g2.setClip(new RoundRectangle2D ...)
-        
-        // so instead fake soft-clipping by first drawing the desired clip shape
-        // in fully opaque white with antialiasing enabled...
-        g2.setComposite(AlphaComposite.Src);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(Color.WHITE);
-        g2.fill(new RoundRectangle2D.Float(0, 0, w, h, Card.CORNER_RADIUS, Card.CORNER_RADIUS));
-        
-        // ... then compositing the image on top,
-        // using the white shape from above as alpha source
-        g2.setComposite(AlphaComposite.SrcAtop);
-        g2.drawImage(image, 0, 0, null);
-        
-        g2.dispose();
-        
-        return output;
+		// TODO Implement non-default back images
+		return new Card(file, defaultBackImageFile);
 	}
 }
