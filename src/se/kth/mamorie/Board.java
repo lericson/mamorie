@@ -63,9 +63,9 @@ public class Board extends Panel {
     					revealed[0] = null;
     					revealed[1] = null;
     					
-    					//notis: nu ms�te vi dock klicka p� ett "kort" f�r att v�nda
-    					//tillbaks korten. Funkar ej att enbart klicka p� spelplanen.
-    					//Ska vi l�gga in mouseListener p� denna?
+    					//notis: nu måste vi dock klicka på ett "kort" för att vända
+    					//tillbaks korten. Funkar ej att enbart klicka på spelplanen.
+    					//Ska vi lägga in mouseListener på spelplanen?
     				}
     			}
     		});
@@ -80,7 +80,7 @@ public class Board extends Panel {
 		}
 		else {
 			//Not pair..
-			//null-st�lla revealed h�r?
+			//null-ställa revealed här? spelar ingen större roll
 		}
 		
 	}
