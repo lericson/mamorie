@@ -9,8 +9,8 @@ import java.awt.Image;
 public class Card extends Component {
 	private static final long serialVersionUID = 1L;
 	
-	final static int CARD_WIDTH = 100;
-	final static int CARD_HEIGHT = 100;
+	final static int CARD_WIDTH = 110;
+	final static int CARD_HEIGHT = 110;
 	final static int CORNER_RADIUS = 25;
 	
 	boolean revealed = false;
