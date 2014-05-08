@@ -20,7 +20,7 @@ public class Board extends Panel {
 	int cardsX;
 	int cardsY;
 	
-	Card[] revealed = new Card[2];
+	private Card[] revealed = new Card[2]; //private or not?
 	
 	public Board(int cardsX, int cardsY) throws IOException {
 		this.cardsX = cardsX;
@@ -88,7 +88,26 @@ public class Board extends Panel {
     			@Override
     			public void mouseClicked(MouseEvent e) {
     				Card card = (Card)e.getSource();
-    				card.reveal();
+    				if (revealed[0] == null) {
+        				card.reveal();	
+        				revealed[0] = card;
+    				}
+    				else if (revealed[1] == null && card != revealed[0]) {
+        				card.reveal();	
+        				revealed[1] = card;	
+        				checkPair();
+        				//skicka iväg par-check?
+    				}
+    				else if (revealed[0] != null && revealed[1] != null) {
+    					revealed[0].conceal();
+    					revealed[1]. conceal();
+    					revealed[0] = null;
+    					revealed[1] = null;
+    					
+    					//notis: nu msåte vi dock klicka på ett "kort" för att vända
+    					//tillbaks korten. Funkar ej att enbart klicka på spelplanen.
+    					//Ska vi lägga in mouseListener på denna?
+    				}
     			}
     		});
     		
@@ -96,6 +115,16 @@ public class Board extends Panel {
         }
 	}
 	
+	public void checkPair() {
+		if (revealed[0].equals(revealed[1])) {
+			//PAIR!!
+		}
+		else {
+			//Not pair..
+			//null-ställa revealed här?
+		}
+		
+	}
 	public static Board level(int level) throws IOException {
 		assert level == 1;
 		return new Board(4, 4);
