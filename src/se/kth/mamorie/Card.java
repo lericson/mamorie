@@ -13,8 +13,8 @@ public class Card extends Component {
 	final static int CARD_HEIGHT = 110;
 	final static int CORNER_RADIUS = 25;
 	
-	boolean revealed = false;
-	Image front = null;
+	private boolean revealed = false;
+	private Image front = null;
 	
 	public Card(Image front) {
 		this.front = front;

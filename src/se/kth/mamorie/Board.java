@@ -47,12 +47,42 @@ public class Board extends Panel {
     			@Override
     			public void mouseClicked(MouseEvent e) {
     				Card card = (Card)e.getSource();
-    				card.reveal();
+    				if (revealed[0] == null) {
+        				card.reveal();	
+        				revealed[0] = card;
+    				}
+    				else if (revealed[1] == null && card != revealed[0]) {
+        				card.reveal();	
+        				revealed[1] = card;	
+        				checkPair();
+        				//skicka iv�g par-check?
+    				}
+    				else if (revealed[0] != null && revealed[1] != null) {
+    					revealed[0].conceal();
+    					revealed[1]. conceal();
+    					revealed[0] = null;
+    					revealed[1] = null;
+    					
+    					//notis: nu ms�te vi dock klicka p� ett "kort" f�r att v�nda
+    					//tillbaks korten. Funkar ej att enbart klicka p� spelplanen.
+    					//Ska vi l�gga in mouseListener p� denna?
+    				}
     			}
     		});
     		
     		add(card);
         }
+	}
+	
+	public void checkPair() {
+		if (revealed[0].equals(revealed[1])) {
+			//PAIR!!
+		}
+		else {
+			//Not pair..
+			//null-st�lla revealed h�r?
+		}
+		
 	}
 	
 	/**
