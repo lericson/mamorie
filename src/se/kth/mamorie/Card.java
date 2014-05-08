@@ -32,7 +32,7 @@ public class Card extends Component {
 			g.drawImage(front, 0, 0, getWidth(), getHeight(), null);
 		} else {
 			g.setColor(Color.LIGHT_GRAY);
-			g.fillRoundRect(0, 0, getWidth(), getHeight(), CORNER_RADIUS, CORNER_RADIUS);
+			g.fillRoundRect(0, 0, getWidth(), getHeight(), CORNER_RADIUS/2, CORNER_RADIUS/2);
 		}
 	}
 	
