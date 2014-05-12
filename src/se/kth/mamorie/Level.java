@@ -10,7 +10,10 @@ public abstract class Level {
 	abstract public Collection<Card> getCards();
 	
 	public static Level level(int levelNum) throws IOException {
-		return FileLevel.level(levelNum);
+		if (levelNum == 1) {
+			return new PatternLevel(levelNum);
+		}
+		return new FileLevel(levelNum);
 	}
 	
 }

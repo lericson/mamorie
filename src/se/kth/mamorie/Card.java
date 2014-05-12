@@ -12,7 +12,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Card extends Component {
 	private static final long serialVersionUID = 1L;
@@ -34,7 +33,7 @@ public class Card extends Component {
 	 * @param frontImageFile Front image file
 	 * @param backImageFile Back image file
 	 */
-	public Card(String pairId, BufferedImage front, BufferedImage back) throws IOException {
+	public Card(String pairId, BufferedImage front, BufferedImage back) {
 		this.pairId = pairId;
 		this.front = front;
 		this.back = back;
