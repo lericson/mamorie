@@ -23,26 +23,34 @@ public abstract class Level {
 	}
 
 	public static Level level(int levelNum) {
-		switch (levelNum) {
-		case 0:
-			return new FileLevel("cats");
-		case 1:
+		// TODO I suggest a simple list structure.
+		if (levelNum-- == 0)
+			return new FileLevel("meow");
+		
+		if (levelNum-- == 0)
 			return new FileLevel("spelevink");
-		case 2:
+		
+		if (levelNum-- == 0)
 			return new RadialFunTimeLevel(8);
-		case 3:
-			return new FileLevel("colors");
-		case 4:
-			return new FileLevel("level4");
-		case 5:
-			return new FileLevel("level5");
-		case 6:
-			return new FileLevel("level6");
-		case 7:
-			return new FileLevel("level7");
-		default:
-			return null;
-		}
+		
+		if (levelNum-- == 0)
+			return new FileLevel("teach-a-man-to-fish");
+		
+		if (levelNum-- == 0)
+			return new FileLevel("shades-of-marie");
+		
+		if (levelNum-- == 0)
+			return new FileLevel("parlez-vous-francais");
+		
+		if (levelNum-- == 0)
+			return new FileLevel("plataldusinesiska");
+		
+		/*
+		if (levelNum-- == 0)
+			return new FileLevel("boss-banan");
+		*/
+
+		return null;
 	}
 
 }

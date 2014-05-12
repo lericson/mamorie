@@ -59,7 +59,7 @@ public class Game implements Board.EventListener {
 		frame.setBackground(new Color(0xed, 0xed, 0xed));
 		frame.setResizable(true);
 		
-		setLevelNum(6);
+		setLevelNum(levelNum);
 	}
 	
 	@Override
