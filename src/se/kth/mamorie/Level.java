@@ -29,8 +29,9 @@ public abstract class Level {
 		case 4: return new FileLevel("level4");
 		case 5: return new FileLevel("level5");
 		case 6: return new FileLevel("level6");
+		case 7: return new FileLevel("level7");
 		}
-		return new PatternLevel(8);
+		return new FileLevel("level7");
 	}
 	
 }

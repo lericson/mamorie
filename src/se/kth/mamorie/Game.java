@@ -9,7 +9,7 @@ import java.awt.event.WindowListener;
 public class Game implements Board.EventListener {
 	Frame frame = null;
 	Board board = null;
-	int levelNum = 0;
+	int levelNum = 7;
 	int streak = 0;
 	int score = 0;
 	
