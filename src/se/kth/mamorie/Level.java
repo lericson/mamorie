@@ -24,21 +24,21 @@ public abstract class Level {
 
 	public static Level level(int levelNum) {
 		switch (levelNum) {
-		case 1:
+		case 0:
 			return new FileLevel("level1");
-		case 2:
+		case 1:
 			return new FileLevel("level2");
-		case 3:
+		case 2:
 			return new FileLevel("level3");
-		case 4:
+		case 3:
 			return new FileLevel("level4");
-		case 5:
+		case 4:
 			return new FileLevel("level5");
-		case 6:
+		case 5:
 			return new FileLevel("level6");
-		case 7:
+		case 6:
 			return new FileLevel("level7");
-		case 8:
+		case 7:
 			return new RadialFunTimeLevel(8);
 		default:
 			return null;

@@ -29,6 +29,9 @@ public class Board extends Panel {
 	 */
 	public static Board level(int levelNum) throws IOException {
 		Level level = Level.level(levelNum);
+		if (level == null) {
+			return null;
+		}
 		return new Board(level.getCards(), 4, 4);
 	}
 	

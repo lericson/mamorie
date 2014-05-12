@@ -9,7 +9,7 @@ import java.awt.event.WindowListener;
 public class Game implements Board.EventListener {
 	Frame frame = null;
 	Board board = null;
-	int levelNum = 7;
+	int levelNum = 0;
 	int streak = 0;
 	int score = 0;
 	
@@ -59,8 +59,7 @@ public class Game implements Board.EventListener {
 		frame.setBackground(new Color(0xed, 0xed, 0xed));
 		frame.setResizable(true);
 		
-		// Triggers loading first level
-		levelFinished();
+		setLevelNum(6);
 	}
 	
 	@Override
@@ -79,8 +78,10 @@ public class Game implements Board.EventListener {
 	public void levelFinished() {
 		// TODO Auto-generated method stub
 		streak = 0;
-		levelNum++;
-		
+		setLevelNum(levelNum + 1);
+	}
+	
+	void setLevelNum(int levelNum) {
 		if (board != null) {
 			frame.remove(board);
 		}
@@ -95,6 +96,7 @@ public class Game implements Board.EventListener {
 		if (board != null) {
 			board.setEventListener(this);
 			frame.add(board);
+			this.levelNum = levelNum;
 		} else {
 			frame.add(new java.awt.Label("Spelet är slut! Du fick " + score + " poäng."));
 		}
