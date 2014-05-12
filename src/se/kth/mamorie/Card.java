@@ -25,6 +25,7 @@ public class Card extends Component {
 	private String pairId = null;
 	private BufferedImage front = null;
 	private BufferedImage back = null;
+	private BufferedImage cache = null;
 	
 	/**
 	 * Create a new card
@@ -45,11 +46,13 @@ public class Card extends Component {
 	
 	public void reveal() {
 		revealed = true;
+		cache = null;
 		repaint();
 	}
 	
 	public void conceal() {
 		revealed = false;
+		cache = null;
 		repaint();
 	}
 	
@@ -63,37 +66,43 @@ public class Card extends Component {
 	 * Draw appropriate side's image depending on revealedness, with a rounded edge.
 	 */
 	public void paint(Graphics g) {
+		if (cache == null) {
+			cache = roundedImage(revealed ? front : back);
+		}
+        g.drawImage(cache, 0, 0, null);
+	}
+	
+	BufferedImage roundedImage(BufferedImage image) {
 		int w = getWidth();
         int h = getHeight();
 		
         Shape shape = new RoundRectangle2D.Float(0, 0, w - 1, h - 1, CORNER_RADIUS, CORNER_RADIUS);
 		Stroke stroke = new BasicStroke(STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
-		Graphics2D g1 = (Graphics2D) g;
 		
-		BufferedImage image = revealed ? front : back;
 		BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = output.createGraphics();
+        Graphics2D g = output.createGraphics();
         
         // Soft-clipping by first drawing the desired clip shape
         // in fully opaque white with antialiasing enabled...
-        g2.setComposite(AlphaComposite.Src);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(Color.WHITE);
-        g2.setStroke(stroke);
-        g2.fill(shape);
+        g.setComposite(AlphaComposite.Src);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(Color.WHITE);
+        g.setStroke(stroke);
+        g.fill(shape);
         // ... then compositing the image on top,
         // using the white shape from above as alpha source
-        g2.setComposite(AlphaComposite.SrcAtop);
-        g2.drawImage(image, 0, 0, w, h, null);
+        g.setComposite(AlphaComposite.SrcAtop);
+        g.drawImage(image, 0, 0, w, h, null);
         
-        g2.dispose();
+        g.setComposite(AlphaComposite.Src);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(new Color(0xde, 0xde, 0xde));
+		g.setStroke(stroke);
+		g.draw(shape);
+		
+        g.dispose();
         
-        g1.drawImage(output, 0, 0, null);
-        g1.setComposite(AlphaComposite.Src);
-        g1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g1.setColor(new Color(0xde, 0xde, 0xde));
-		g1.setStroke(stroke);
-		g1.draw(shape);
+		return output;
 	}
 
 }
