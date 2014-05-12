@@ -26,25 +26,25 @@ public abstract class Level {
 		// TODO I suggest a simple list structure.
 		if (levelNum-- == 0)
 			return new FileLevel("meow");
-		
+
 		if (levelNum-- == 0)
 			return new FileLevel("spelevink");
-		
+
 		if (levelNum-- == 0)
 			return new RadialFunTimeLevel(8);
-		
+
 		if (levelNum-- == 0)
 			return new FileLevel("teach-a-man-to-fish");
-		
+
 		if (levelNum-- == 0)
 			return new FileLevel("shades-of-marie");
-		
+
 		if (levelNum-- == 0)
 			return new FileLevel("parlez-vous-francais");
-		
+
 		if (levelNum-- == 0)
 			return new FileLevel("plataldusinesiska");
-		
+
 		/*
 		if (levelNum-- == 0)
 			return new FileLevel("boss-banan");
