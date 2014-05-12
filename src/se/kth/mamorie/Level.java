@@ -3,6 +3,10 @@ package se.kth.mamorie;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -13,10 +17,12 @@ public class Level {
 	private Card[] cards;
 	private String levelDir;
 	private BufferedImage defaultBackImage = null;
+	private Random rng = null;
 	
 	public Level(int levelNum) throws IOException {
+		this.rng = new Random(System.nanoTime());
 		this.levelDir = "res/level" + levelNum;
-		cards = loadCards();
+		this.cards = loadCards();
 	}
 	
 	public Card[] getCards() {
@@ -43,23 +49,22 @@ public class Level {
 			// TODO Load board background and things like that
 		}
 		
-		int i = 0;
-		cards = new Card[2*nCards];
+		int cardIndex = 0;
+		List<Card> cards = Arrays.asList(new Card[2*nCards]);
 		
 		for (File file : files) {
-			if (file.getName().startsWith("card-")) {
-				cards[i++] = loadCard(file);
-				cards[i++] = loadCard(file);
+			String fileName = file.getName();
+			if (fileName.startsWith("card-")) {
+				BufferedImage frontImage = ImageIO.read(file);
+				cards.set(cardIndex++, new Card(fileName, frontImage, defaultBackImage));
+				cards.set(cardIndex++, new Card(fileName, frontImage, defaultBackImage));
 			}
 		}
 		
-		assert nCards == i;
+		assert cardIndex == cards.size();
 		
-		return cards;
-	}
-	
-	private Card loadCard(File file) throws IOException {
-		// TODO Implement non-default back images
-		return new Card(ImageIO.read(file), defaultBackImage);
+		Collections.shuffle(cards, rng);
+		
+		return (Card[])cards.toArray();
 	}
 }

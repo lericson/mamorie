@@ -7,9 +7,17 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 
 public class Board extends Panel {
-	private static final long serialVersionUID = -3239991201204402152L;
+	private static final long serialVersionUID = 1L;
 	
-	private Card[] revealed = new Card[2];
+	private Card revealed1 = null;
+	private Card revealed2 = null;
+	
+	interface EventListener {
+		public void pickedUp(boolean pair);
+		public void levelFinished();
+	}
+	
+	private EventListener listener = null;
 	
 	public Board(Card[] cards, int cardsX, int cardsY) {
 		GridLayout layout = new GridLayout(cardsX, cardsY);
@@ -47,25 +55,36 @@ public class Board extends Panel {
     			@Override
     			public void mouseClicked(MouseEvent e) {
     				Card card = (Card)e.getSource();
-    				if (revealed[0] == null) {
-        				card.reveal();	
-        				revealed[0] = card;
-    				}
-    				else if (revealed[1] == null && card != revealed[0]) {
-        				card.reveal();	
-        				revealed[1] = card;	
-        				checkPair();
-        				//skicka iväg par-check?
-    				}
-    				else if (revealed[0] != null && revealed[1] != null) {
-    					revealed[0].conceal();
-    					revealed[1]. conceal();
-    					revealed[0] = null;
-    					revealed[1] = null;
+    				
+    				if (revealed1 == null) {
+        				card.reveal();
+        				revealed1 = card;
+    				} else if (revealed2 == null && card != revealed1) {
+        				card.reveal();
+        				revealed2 = card;
+    				} else if (revealed1 != null && revealed2 != null) {
+    					boolean isPair = revealed1.equals(revealed2);
     					
-    					//notis: nu måste vi dock klicka på ett "kort" för att vända
-    					//tillbaks korten. Funkar ej att enbart klicka på spelplanen.
-    					//Ska vi lägga in mouseListener på spelplanen?
+    					listener.pickedUp(isPair);
+    					
+        				if (isPair) {
+        					remove(revealed1);
+        					remove(revealed2);
+        					repaint();
+        					// TODO Poäng
+        					// TODO Vinna
+        				} else {
+        					// Nullställning
+	    					revealed1.conceal();
+	    					revealed2.conceal();
+        				}
+        				
+    					revealed1 = null;
+    					revealed2 = null;
+    					
+    					if (getComponentCount() == 0) {
+    						listener.levelFinished();
+    					}
     				}
     			}
     		});
@@ -74,14 +93,8 @@ public class Board extends Panel {
         }
 	}
 	
-	public void checkPair() {
-		if (revealed[0].equals(revealed[1])) {
-			//PAIR!!
-		}
-		else {
-			//Not pair..
-			//null-ställa revealed här? spelar ingen större roll
-		}
+	public void setEventListener(EventListener listener) {
+		this.listener = listener;
 	}
 	
 	/**

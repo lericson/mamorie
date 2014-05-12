@@ -19,18 +19,35 @@ public class Card extends Component {
 	final static int CORNER_RADIUS = 25;
 	
 	private boolean revealed = false;
+	private String pairId = null;
 	private BufferedImage front = null;
 	private BufferedImage back = null;
 	
 	/**
-	 * Create a new card with front and back images
+	 * Create a new card
 	 * 
+	 * @param id Pair ID of the card, used for equality 
 	 * @param frontImageFile Front image file
 	 * @param backImageFile Back image file
 	 */
-	public Card(BufferedImage front, BufferedImage back) throws IOException {
+	public Card(String pairId, BufferedImage front, BufferedImage back) throws IOException {
+		this.pairId = pairId;
 		this.front = front;
 		this.back = back;
+	}
+	
+	public boolean equals(Card other) {
+		return this.pairId == other.pairId;
+	}
+	
+	public void reveal() {
+		revealed = true;
+		repaint();
+	}
+	
+	public void conceal() {
+		revealed = false;
+		repaint();
 	}
 	
 	@Override
@@ -39,6 +56,9 @@ public class Card extends Component {
 	}
 	
 	@Override
+	/**
+	 * Draw appropriate side's image depending on revealedness, with a rounded edge.
+	 */
 	public void paint(Graphics g) {
 		//g.drawImage(revealed ? front : back, 0, 0, getWidth(), getHeight(), null);
 		
@@ -68,15 +88,5 @@ public class Card extends Component {
         g2.dispose();
         
         g.drawImage(output, 0, 0, null);
-	}
-	
-	public void reveal() {
-		revealed = true;
-		repaint();
-	}
-	
-	public void conceal() {
-		revealed = false;
-		repaint();
 	}
 }
