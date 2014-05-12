@@ -12,6 +12,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 
 public class Card extends Component {
 	private static final long serialVersionUID = 1L;
@@ -92,6 +93,7 @@ public class Card extends Component {
         // ... then compositing the image on top,
         // using the white shape from above as alpha source
         g.setComposite(AlphaComposite.SrcAtop);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g.drawImage(image, 0, 0, w, h, null);
         
         g.setComposite(AlphaComposite.Src);

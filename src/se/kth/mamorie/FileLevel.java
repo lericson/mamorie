@@ -17,8 +17,8 @@ public class FileLevel extends Level {
 	private String levelDir;
 	private BufferedImage defaultBackImage = null;
 	
-	public FileLevel(int levelNum) throws IOException {
-		levelDir = "res/level" + levelNum;
+	public FileLevel(String name) throws IOException {
+		levelDir = "res/" + name;
 		cards = new ArrayList<Card>();
 		loadCards();
 	}
