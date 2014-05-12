@@ -3,65 +3,65 @@ package se.kth.mamorie;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Panel;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JPanel;
 
-public class Game extends JPanel implements Board.EventListener {
+public class Game implements Board.EventListener {
 	private static final long serialVersionUID = 1L;
 
+	Frame frame = null;
 	Board board = null;
 	int levelNum = 0;
 	int streak = 0;
 	int score = 0;
 	
 	public static void main(String[] args) {
-		Frame frame = new Frame("Mamorie!");
-		frame.add(new Game());
-		frame.pack();
+		Game game = new Game();
+	}
+	
+	Game() {
+		frame = new Frame("Mamorie!");
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowListener() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				System.exit(0);
 			}
-
+			
 			@Override
 			public void windowActivated(WindowEvent e) {				
 			}
-
+			
 			@Override
 			public void windowClosed(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowDeactivated(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowDeiconified(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowIconified(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowOpened(WindowEvent e) {
 			}
 		});
-	}
-	
-	Game() {
-		super(true);
-		
-		setBackground(new Color(0xed, 0xed, 0xed));
-		
+
 		FlowLayout layout = new FlowLayout();
 		layout.setHgap(Card.CARD_WIDTH/10);
 		layout.setVgap(Card.CARD_HEIGHT/10);
-		setLayout(layout);
+		frame.setLayout(layout);
+		frame.setBackground(new Color(0xed, 0xed, 0xed));
+		frame.setResizable(true);
 		
 		// Triggers loading first level
 		levelFinished();
@@ -86,7 +86,7 @@ public class Game extends JPanel implements Board.EventListener {
 		levelNum++;
 		
 		if (board != null) {
-			remove(board);
+			frame.remove(board);
 		}
 		
 		try {
@@ -98,16 +98,12 @@ public class Game extends JPanel implements Board.EventListener {
 		
 		if (board != null) {
 			board.setEventListener(this);
-			add(board);
+			frame.add(board);
 		} else {
-			add(new java.awt.Label("Spelet är slut! Du fick " + score + " poäng."));
+			frame.add(new java.awt.Label("Spelet är slut! Du fick " + score + " poäng."));
 		}
 		
-		doLayout();
-		//System.err.println("preferred size: " + getLayout().minimumLayoutSize(this));
-		//setPreferredSize(getLayout().preferredLayoutSize(this));
-		//setMinimumSize(getLayout().minimumLayoutSize(this));
-		//setSize(getPreferredSize());
-		repaint();
+		frame.pack();
+		frame.repaint();
 	}
 }
