@@ -1,5 +1,6 @@
 package se.kth.mamorie;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
@@ -9,7 +10,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		Frame frame = new Frame("Mamorie");
-		
+		frame.setBackground(new Color(0xed, 0xed, 0xed));
+
 		frame.addWindowListener(new WindowListener() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {

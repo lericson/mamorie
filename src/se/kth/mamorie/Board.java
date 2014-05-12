@@ -11,6 +11,18 @@ public class Board extends Panel {
 	
 	private Card[] revealed = new Card[2];
 	
+	/**
+	 * Get a new board for level levelNum.
+	 * 
+	 * @param levelNum Number of the level to create a board for
+	 * @return A new board for the level
+	 * @throws IOException Level could not be loaded
+	 */
+	public static Board level(int levelNum) throws IOException {
+		Level level = new Level(levelNum);
+		return new Board(level.getCards(), 4, 4);
+	}
+	
 	public Board(Card[] cards, int cardsX, int cardsY) {
 		GridLayout layout = new GridLayout(cardsX, cardsY);
 		layout.setHgap(Card.CARD_WIDTH/10);
@@ -84,15 +96,4 @@ public class Board extends Panel {
 		}
 	}
 	
-	/**
-	 * Get a new board for level levelNum.
-	 * 
-	 * @param levelNum Number of the level to create a board for
-	 * @return A new board for the level
-	 * @throws IOException Level could not be loaded
-	 */
-	public static Board level(int levelNum) throws IOException {
-		Level level = new Level(levelNum);
-		return new Board(level.getCards(), 4, 4);
-	}
 }
