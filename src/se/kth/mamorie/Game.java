@@ -58,7 +58,7 @@ public class Game extends JPanel implements Board.EventListener {
 	Game() {
 		super(true);
 		
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(new Color(0xed, 0xed, 0xed));
 		
 		FlowLayout layout = new FlowLayout();
 		layout.setHgap(Card.CARD_WIDTH/10);
