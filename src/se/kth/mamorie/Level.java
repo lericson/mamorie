@@ -11,9 +11,9 @@ public abstract class Level {
 	
 	public static Level level(int levelNum) throws IOException {
 		if (levelNum == 1) {
-			return new PatternLevel(levelNum);
+			return new FileLevel(5);
 		}
-		return new FileLevel(levelNum);
+		return new FileLevel(5);
 	}
 	
 }

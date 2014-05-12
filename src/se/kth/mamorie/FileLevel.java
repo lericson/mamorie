@@ -4,10 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -19,12 +16,11 @@ public class FileLevel extends Level {
 	private Collection<Card> cards;
 	private String levelDir;
 	private BufferedImage defaultBackImage = null;
-	private Random rng = null;
 	
 	public FileLevel(int levelNum) throws IOException {
-		this.rng = new Random(System.nanoTime());
-		this.levelDir = "res/level" + levelNum;
-		this.cards = loadCards();
+		levelDir = "res/level" + levelNum;
+		cards = new ArrayList<Card>();
+		loadCards();
 	}
 	
 	@Override
@@ -32,41 +28,45 @@ public class FileLevel extends Level {
 		return new ArrayList<Card>(cards);
 	}
 	
-	private Collection<Card> loadCards() throws IOException {
-		File dir = new File(this.levelDir);
+	private void loadCards() throws IOException {
+		File dir = new File(levelDir);
 		File[] files = dir.listFiles();
 		
 		if (files == null) {
 			throw new IOException("level not found");
 		}
 		
-		int nCards = 0;
-		
+		try {
+			defaultBackImage = ImageIO.read(new File(levelDir + "/back.jpg"));
+		} catch (IOException e) {
+			System.err.println("Couldn't load back image.");
+			e.printStackTrace();
+		}
+			
 		for (File file : files) {
-			if (file.getName().startsWith("back.")) {
-				defaultBackImage = ImageIO.read(file);
+			if (file.isDirectory()) {
+				loadPair(file);
 			} else if (file.getName().startsWith("card-")) {
-				nCards++;
+				loadCard(file);				
 			}
 			// TODO Load board background and things like that
 		}
-		
-		int cardIndex = 0;
-		List<Card> cards = Arrays.asList(new Card[2*nCards]);
-		
-		for (File file : files) {
-			String fileName = file.getName();
-			if (fileName.startsWith("card-")) {
-				BufferedImage frontImage = ImageIO.read(file);
-				cards.set(cardIndex++, new Card(fileName, frontImage, defaultBackImage));
-				cards.set(cardIndex++, new Card(fileName, frontImage, defaultBackImage));
-			}
-		}
-		
-		assert cardIndex == cards.size();
-		
-		Collections.shuffle(cards, rng);
-		
-		return cards;
 	}
+	
+	public void loadPair(File pairFile) throws IOException {
+		File[] pair = pairFile.listFiles();
+		String fileName = pair[0].getName();
+		if (pair.length > 1) {
+			BufferedImage frontImage1 = ImageIO.read(pair[0]);
+			BufferedImage frontImage2 = ImageIO.read(pair[1]);
+			cards.add(new Card(fileName, frontImage1, defaultBackImage));
+			cards.add(new Card(fileName, frontImage2, defaultBackImage));	
+		}	
+	}
+	public void loadCard(File cardFile) throws IOException {	
+		String fileName = cardFile.getName();
+		BufferedImage frontImage = ImageIO.read(cardFile);
+		cards.add(new Card(fileName, frontImage, defaultBackImage));
+		cards.add(new Card(fileName, frontImage, defaultBackImage));			
+		}
 }
