@@ -10,9 +10,10 @@ import java.util.Collections;
  */
 public abstract class Level {
 	private Collection<Card> cachedCards = null;
-	abstract protected Collection<Card> loadCards() throws IOException;
-	
-	final public Collection<Card> getCards() throws IOException {
+
+	protected abstract Collection<Card> loadCards() throws IOException;
+
+	public final Collection<Card> getCards() throws IOException {
 		if (cachedCards == null) {
 			cachedCards = loadCards();
 		}
@@ -20,18 +21,28 @@ public abstract class Level {
 		Collections.shuffle(cards);
 		return cards;
 	}
-	
+
 	public static Level level(int levelNum) {
 		switch (levelNum) {
-		case 1: return new FileLevel("level1");
-		case 2: return new FileLevel("level2");
-		case 3: return new FileLevel("level3");
-		case 4: return new FileLevel("level4");
-		case 5: return new FileLevel("level5");
-		case 6: return new FileLevel("level6");
-		case 7: return new FileLevel("level7");
+		case 1:
+			return new FileLevel("level1");
+		case 2:
+			return new FileLevel("level2");
+		case 3:
+			return new FileLevel("level3");
+		case 4:
+			return new FileLevel("level4");
+		case 5:
+			return new FileLevel("level5");
+		case 6:
+			return new FileLevel("level6");
+		case 7:
+			return new FileLevel("level7");
+		case 8:
+			return new RadialFunTimeLevel(8);
+		default:
+			return null;
 		}
-		return new FileLevel("level7");
 	}
-	
+
 }
