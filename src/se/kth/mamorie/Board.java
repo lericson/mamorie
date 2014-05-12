@@ -29,7 +29,7 @@ public class Board extends Panel {
 	 */
 	public static Board level(int levelNum) throws IOException {
 		Level level = Level.level(levelNum);
-		return new Board(level.getCards(), 4, 4);
+		return new Board(level.loadCards(), 4, 4);
 	}
 	
 	public Board(Collection<Card> cards, int cardsX, int cardsY) {

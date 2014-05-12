@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -13,22 +12,16 @@ import javax.imageio.ImageIO;
  * A level backed by image files on disk
  */
 public class FileLevel extends Level {
-	private Collection<Card> cards;
 	private String levelDir;
 	private BufferedImage defaultBackImage = null;
 	
-	public FileLevel(String name) throws IOException {
+	public FileLevel(String name) {
 		levelDir = "res/" + name;
-		cards = new ArrayList<Card>();
-		loadCards();
 	}
 	
-	@Override
-	public Collection<Card> getCards() {
-		return new ArrayList<Card>(cards);
-	}
-	
-	private void loadCards() throws IOException {
+	protected Collection<Card> loadCards() throws IOException {
+		ArrayList<Card> cards = new ArrayList<Card>();
+
 		File dir = new File(levelDir);
 		File[] files = dir.listFiles();
 		
@@ -44,29 +37,20 @@ public class FileLevel extends Level {
 		}
 			
 		for (File file : files) {
+			String fileName = file.getName();
 			if (file.isDirectory()) {
-				loadPair(file);
+				for (File pair : file.listFiles()) {
+					BufferedImage frontImage = ImageIO.read(pair);
+					cards.add(new Card(fileName, frontImage, defaultBackImage));
+				}
 			} else if (file.getName().startsWith("card-")) {
-				loadCard(file);				
+				BufferedImage frontImage = ImageIO.read(file);
+				cards.add(new Card(fileName, frontImage, defaultBackImage));
+				cards.add(new Card(fileName, frontImage, defaultBackImage));			
 			}
 			// TODO Load board background and things like that
 		}
+		
+		return cards;
 	}
-	
-	public void loadPair(File pairFile) throws IOException {
-		File[] pair = pairFile.listFiles();
-		String fileName = pair[0].getName();
-		if (pair.length > 1) {
-			BufferedImage frontImage1 = ImageIO.read(pair[0]);
-			BufferedImage frontImage2 = ImageIO.read(pair[1]);
-			cards.add(new Card(fileName, frontImage1, defaultBackImage));
-			cards.add(new Card(fileName, frontImage2, defaultBackImage));	
-		}	
-	}
-	public void loadCard(File cardFile) throws IOException {	
-		String fileName = cardFile.getName();
-		BufferedImage frontImage = ImageIO.read(cardFile);
-		cards.add(new Card(fileName, frontImage, defaultBackImage));
-		cards.add(new Card(fileName, frontImage, defaultBackImage));			
-		}
 }

@@ -10,28 +10,30 @@ import java.util.Collection;
 import java.util.Random;
 
 public class PatternLevel extends Level {
-	private ArrayList<Card> cards;
 	private Random rng;
+	private int numPairs; 
 	
-	public PatternLevel(int levelNum) {
-		rng = new Random(System.nanoTime());
-		cards = new ArrayList<Card>(16);
+	public PatternLevel(int numPairs) {
+		this.rng = new Random(System.nanoTime());
+		this.numPairs = numPairs;
+	}
+	
+	@Override
+	public Collection<Card> loadCards() {
+		ArrayList<Card> cards = new ArrayList<Card>(2*numPairs);
 		
 		BufferedImage back = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 		drawBack(back);
 		
-		while (cards.size() < 16) {
+		while (cards.size()/2 < numPairs) {
 			String pairId = String.valueOf(cards.size());
 			BufferedImage front = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 			drawFront(front);
 			cards.add(new Card(pairId, front, back));
 			cards.add(new Card(pairId, front, back));
 		}
-	}
-	
-	@Override
-	public Collection<Card> getCards() {
-		return new ArrayList<Card>(cards);
+		
+		return cards;
 	}
 	
 	void drawBack(BufferedImage image) {
@@ -47,7 +49,7 @@ public class PatternLevel extends Level {
 	}
 	
 	void drawFront(BufferedImage image) {
-		int n = 2+rng.nextInt(6);
+		int n = 20+rng.nextInt(10);
 		float[] dists = new float[n];
 		Color[] colors = new Color[n];
 		for (int i = 0; i < n; i++) {
@@ -61,8 +63,9 @@ public class PatternLevel extends Level {
 		Graphics2D g = image.createGraphics();
 		int w = image.getWidth();
 		int h = image.getHeight();
-		int r = Math.min(w, h)/2;
-		RadialGradientPaint radialGradient = new RadialGradientPaint(new Point2D.Float(r, r), r, dists, colors);
+		float r = (float)Math.sqrt((w*w + h*h)/4);
+		Point2D center = new Point2D.Float(w/2, h/2); 
+		RadialGradientPaint radialGradient = new RadialGradientPaint(center, r, dists, colors);
 		g.setPaint(radialGradient);
 		g.fillRect(0, 0, w, h);
 	}

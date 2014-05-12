@@ -12,7 +12,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 
 public class Card extends Component {
 	private static final long serialVersionUID = 1L;
@@ -82,18 +81,18 @@ public class Card extends Component {
 		
 		BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = output.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         
         // Soft-clipping by first drawing the desired clip shape
         // in fully opaque white with antialiasing enabled...
         g.setComposite(AlphaComposite.Src);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(Color.WHITE);
         g.setStroke(stroke);
         g.fill(shape);
         // ... then compositing the image on top,
         // using the white shape from above as alpha source
         g.setComposite(AlphaComposite.SrcAtop);
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g.drawImage(image, 0, 0, w, h, null);
         
         g.setComposite(AlphaComposite.Src);
@@ -101,7 +100,7 @@ public class Card extends Component {
         g.setColor(new Color(0xde, 0xde, 0xde));
 		g.setStroke(stroke);
 		g.draw(shape);
-		
+				
         g.dispose();
         
 		return output;
