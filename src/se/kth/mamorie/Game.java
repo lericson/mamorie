@@ -3,21 +3,17 @@ package se.kth.mamorie;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.Panel;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.JPanel;
-
 public class Game implements Board.EventListener {
-	private static final long serialVersionUID = 1L;
-
 	Frame frame = null;
 	Board board = null;
 	int levelNum = 0;
 	int streak = 0;
 	int score = 0;
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Game game = new Game();
 	}

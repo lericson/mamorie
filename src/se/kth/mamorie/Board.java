@@ -5,6 +5,7 @@ import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Collection;
 
 public class Board extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -27,11 +28,11 @@ public class Board extends Panel {
 	 * @throws IOException Level could not be loaded
 	 */
 	public static Board level(int levelNum) throws IOException {
-		Level level = new Level(levelNum);
+		Level level = Level.level(levelNum);
 		return new Board(level.getCards(), 4, 4);
 	}
 	
-	public Board(Card[] cards, int cardsX, int cardsY) {
+	public Board(Collection<Card> cards, int cardsX, int cardsY) {
 		GridLayout layout = new GridLayout(cardsX, cardsY);
 		layout.setHgap(Card.CARD_WIDTH/10);
 		layout.setVgap(Card.CARD_HEIGHT/10);
